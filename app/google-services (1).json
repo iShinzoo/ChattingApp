@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "51720009499",
+    "project_id": "chattingapp-98680",
+    "storage_bucket": "chattingapp-98680.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:51720009499:android:a0e0c0d99baf85129d45be",
+        "android_client_info": {
+          "package_name": "com.example.chatterbox"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnMpyyERK0XRC8xYf5h3ZSoql6BGCa-d0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
