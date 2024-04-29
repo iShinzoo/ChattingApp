@@ -1,5 +1,7 @@
 package com.example.chatterbox.screens
 
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,11 +23,18 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.chatterbox.CBViewModel
 import com.example.chatterbox.R
 import com.example.chatterbox.navigation.Route
 
 @Composable
-fun ChatListScreen(navController: NavController) {
+fun ChatListScreen(navController: NavController,vm : CBViewModel) {
+
+    BackHandler(true) {
+        // Close the app when back button is pressed
+        (navController.context as ComponentActivity).finish()
+    }
+
     Box(modifier = Modifier.fillMaxSize()){
         Column {
             TopAppbar(navController = navController)

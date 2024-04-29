@@ -26,7 +26,7 @@ class CBViewModel @Inject constructor(
     val userData = mutableStateOf<UserData?>(null)
 
     init {
-        var currentUser = auth.currentUser
+        val currentUser = auth.currentUser
         currentUser?.uid?.let {
             getUserData(it)
         }
@@ -61,16 +61,15 @@ class CBViewModel @Inject constructor(
 
     }
 
-    fun Login(email:  String,password: String){
+    fun Login(email: String, password: String){
         if (email.isEmpty() or password.isEmpty()){
             handleException(customMessage = "Please fill all above fields")
             return
         } else{
             inProcess.value = true
-            auth.signInWithEmailAndPassword(email,password).addOnCompleteListener{
+            auth.signInWithEmailAndPassword(email,password).addOnCompleteListener{ it ->
                 if (it.isSuccessful){
                     signIn.value = true
-                    inProcess.value = true
                     auth.currentUser?.uid?.let {
                         getUserData(it)
                     }

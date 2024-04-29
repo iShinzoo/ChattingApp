@@ -1,5 +1,6 @@
 package com.example.chatterbox.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -54,6 +56,7 @@ fun LoginScreen(navController: NavController,
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordHidden by remember { mutableStateOf(true) }
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier
@@ -171,7 +174,7 @@ fun LoginScreen(navController: NavController,
             ElevatedButton(
                 onClick = {
                     // Move to Chat Screen
-                    vm.Login(email,password)
+                    vm.Login(email = email, password = password)
                 },
                 modifier = Modifier.width(300.dp),
                 colors = ButtonDefaults.elevatedButtonColors(colorResource(id = R.color.textColor))

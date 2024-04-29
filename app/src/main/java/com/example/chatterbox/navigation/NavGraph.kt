@@ -40,18 +40,18 @@ fun NavGraph(vm : CBViewModel) {
         composable(
             route = Route.ChatListScreen.route
         ) {
-            ChatListScreen(navController = navController)
+            ChatListScreen(navController = navController, vm = vm)
         }
 
         composable(
             route = Route.SingleChatScreen.route
         ) {
-            SingleChatScreen(navController = navController)
+            SingleChatScreen(navController = navController, vm = vm)
         }
         composable(
             route = Route.ProfileScreen.route
         ) {
-            ProfileScreen(navController = navController)
+            ProfileScreen(navController = navController, vm = vm)
         }
     }
 }
