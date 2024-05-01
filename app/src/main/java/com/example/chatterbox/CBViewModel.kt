@@ -151,7 +151,7 @@ class CBViewModel @Inject constructor(
     }
 
     fun uploadImage(uri: Uri, onSuccess: (Uri) -> Unit) {
-        inProcess.value = true
+//        inProcess.value = true
         val storageRef = storage.reference
         val uuid = UUID.randomUUID()
         val imageRef = storageRef.child("images/$uuid")
@@ -161,7 +161,7 @@ class CBViewModel @Inject constructor(
             val result = it.metadata?.reference?.downloadUrl
 
             result?.addOnSuccessListener(onSuccess)
-            inProcess.value = false
+//            inProcess.value = false
         }
             .addOnFailureListener {
                 handleException(it)
