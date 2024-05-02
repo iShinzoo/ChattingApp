@@ -13,8 +13,10 @@ import com.example.chatterbox.R
 fun CommonImage(
     data: String?,
     modifier: Modifier = Modifier.wrapContentSize(),
-    contentScale: ContentScale = ContentScale.Crop
+    contentScale: ContentScale = ContentScale.Fit
 ) {
+
+
     val painter = rememberImagePainter(data = data)
     Image(
         painter = painter,

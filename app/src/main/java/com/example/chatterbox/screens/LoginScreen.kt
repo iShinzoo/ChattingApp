@@ -50,13 +50,20 @@ import com.example.chatterbox.navigation.Route
 
 
 @Composable
-fun LoginScreen(navController: NavController,
-                vm : CBViewModel){
+fun LoginScreen(
+    navController: NavController,
+    vm: CBViewModel
+) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordHidden by remember { mutableStateOf(true) }
     val context = LocalContext.current
+
+    val signIn by remember(vm.signIn) { vm.signIn }
+    if (signIn) {
+        navController.navigate(Route.ChatListScreen.route)
+    }
 
     Box(
         modifier = Modifier
@@ -175,6 +182,7 @@ fun LoginScreen(navController: NavController,
                 onClick = {
                     // Move to Chat Screen
                     vm.Login(email = email, password = password)
+                    Toast.makeText(context, "Login successfully", Toast.LENGTH_SHORT).show()
                 },
                 modifier = Modifier.width(300.dp),
                 colors = ButtonDefaults.elevatedButtonColors(colorResource(id = R.color.textColor))

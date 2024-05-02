@@ -2,17 +2,20 @@ package com.example.chatterbox
 
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import coil.compose.rememberImagePainter
 import com.example.chatterbox.data.Event
 import com.example.chatterbox.data.USER_NODE
 import com.example.chatterbox.data.UserData
+import com.example.chatterbox.screens.common.ShowToast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
@@ -99,7 +102,7 @@ class CBViewModel @Inject constructor(
             userId = uid,
             name = name ?: userData.value?.name,
             number = number ?: userData.value?.number,
-            imageUrl = imageUrl ?: userData.value?.imageUrl,
+            imageUrl = imageUrl,
         )
 
         uid?.let {
@@ -107,6 +110,14 @@ class CBViewModel @Inject constructor(
             db.collection(USER_NODE).document(uid).get().addOnSuccessListener {
                 if (it.exists()) {
                     // update user Data
+                    db.collection(USER_NODE).document(uid).update(
+                        mapOf(
+                            "name" to userData.name,
+                            "number" to userData.number,
+                            "imageUrl" to imageUrl // Update the imageUrl here
+                        )
+                    )
+                    inProcess.value = false
                 } else {
                     db.collection(USER_NODE).document(uid).set(userData)
                     inProcess.value = false
@@ -145,13 +156,16 @@ class CBViewModel @Inject constructor(
     }
 
     fun uploadProfileImage(uri: Uri) {
-        uploadImage(uri) {
-            CreateOrUpdateProfile(imageUrl = it.toString())
+        uploadImage(uri) { imageUrl ->
+            // After successful upload, update the user's profile with the image URL
+            userData.value?.userId?.let { userId ->
+                CreateOrUpdateProfile(imageUrl = imageUrl.toString())
+            }
         }
     }
 
     fun uploadImage(uri: Uri, onSuccess: (Uri) -> Unit) {
-//        inProcess.value = true
+        inProcess.value = true
         val storageRef = storage.reference
         val uuid = UUID.randomUUID()
         val imageRef = storageRef.child("images/$uuid")
@@ -161,11 +175,11 @@ class CBViewModel @Inject constructor(
             val result = it.metadata?.reference?.downloadUrl
 
             result?.addOnSuccessListener(onSuccess)
-//            inProcess.value = false
+            inProcess.value = false
         }
             .addOnFailureListener {
                 handleException(it)
             }
     }
-
 }
+
