@@ -17,8 +17,10 @@ import com.example.chatterbox.data.USER_NODE
 import com.example.chatterbox.data.UserData
 import com.example.chatterbox.screens.common.ShowToast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.lang.Exception
@@ -27,16 +29,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CBViewModel @Inject constructor(
-    private val auth: FirebaseAuth,
-    var db: FirebaseFirestore,
-    var storage: FirebaseStorage
+    private val auth: FirebaseAuth, var db: FirebaseFirestore, var storage: FirebaseStorage
 ) : ViewModel() {
 
 
     val inProcess = mutableStateOf(false)
     val eventMutbaleState = mutableStateOf<Event<String>?>(null)
     var signIn = mutableStateOf(false)
-    val  userData = mutableStateOf<UserData?>(null)
+    val userData = mutableStateOf<UserData?>(null)
 
     init {
         val currentUser = auth.currentUser
@@ -93,9 +93,7 @@ class CBViewModel @Inject constructor(
     }
 
     fun CreateOrUpdateProfile(
-        name: String? = null,
-        number: String? = null,
-        imageUrl: String? = null
+        name: String? = null, number: String? = null, imageUrl: String? = null
     ) {
         val uid = auth.currentUser?.uid
         val userData = UserData(
@@ -123,10 +121,9 @@ class CBViewModel @Inject constructor(
                     inProcess.value = false
                     getUserData(uid)
                 }
+            }.addOnFailureListener {
+                handleException(it, "Cannot Retrieve User")
             }
-                .addOnFailureListener {
-                    handleException(it, "Cannot Retrieve User")
-                }
         }
     }
 
@@ -176,10 +173,17 @@ class CBViewModel @Inject constructor(
 
             result?.addOnSuccessListener(onSuccess)
             inProcess.value = false
+        }.addOnFailureListener {
+            handleException(it)
         }
-            .addOnFailureListener {
-                handleException(it)
-            }
+    }
+
+    fun Logout() {
+        val auth = Firebase.auth
+        auth.signOut()
+        signIn.value = false
+        userData.value = null
+        eventMutbaleState.value = Event("Logged Out")
     }
 }
 

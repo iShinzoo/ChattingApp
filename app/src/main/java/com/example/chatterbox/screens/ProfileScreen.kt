@@ -84,6 +84,10 @@ fun ProfileScreen(navController: NavController, vm: CBViewModel) {
             )
             Toast.makeText(context, "Details Updated Successfully", Toast.LENGTH_SHORT).show()
         },
+        onLogout = {
+            vm.Logout()
+            navController.navigate(Route.LoginScreen.route)
+        },
         name = name,
         number = number,
         onNameChange = { name = it },
@@ -100,6 +104,7 @@ fun ProfileContent(
     imageUrl: String?,
     vm: CBViewModel,
     onSave: () -> Unit,
+    onLogout: () -> Unit,
     name: String,
     number: String,
     onNameChange: (String) -> Unit,
@@ -140,9 +145,7 @@ fun ProfileContent(
                         )
                     }
                     IconButton(onClick = {
-                        val auth = Firebase.auth
-                        auth.signOut()
-                        navController.navigate(Route.LoginScreen.route)
+                        onLogout()
                         Toast.makeText(context, "Logout Successfully", Toast.LENGTH_SHORT).show()
                     }) {
                         Icon(
