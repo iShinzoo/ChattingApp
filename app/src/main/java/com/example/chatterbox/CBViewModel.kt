@@ -12,6 +12,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import coil.compose.rememberImagePainter
+import com.example.chatterbox.data.ChatData
 import com.example.chatterbox.data.Event
 import com.example.chatterbox.data.USER_NODE
 import com.example.chatterbox.data.UserData
@@ -34,9 +35,11 @@ class CBViewModel @Inject constructor(
 
 
     val inProcess = mutableStateOf(false)
+    val inProcessChats = mutableStateOf(false)
     val eventMutbaleState = mutableStateOf<Event<String>?>(null)
     var signIn = mutableStateOf(false)
     val userData = mutableStateOf<UserData?>(null)
+    val  chats = mutableStateOf<List<ChatData>>(listOf())
 
     init {
         val currentUser = auth.currentUser
@@ -184,6 +187,10 @@ class CBViewModel @Inject constructor(
         signIn.value = false
         userData.value = null
         eventMutbaleState.value = Event("Logged Out")
+    }
+
+    fun onAddChat(it: String) {
+
     }
 }
 
