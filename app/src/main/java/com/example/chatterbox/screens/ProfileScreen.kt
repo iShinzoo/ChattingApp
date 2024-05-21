@@ -25,6 +25,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
@@ -32,6 +33,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -107,6 +109,9 @@ fun ProfileContent(
 ) {
 
     val context = LocalContext.current
+
+    var isEnabled by remember { mutableStateOf(false) }
+    var isEnabledo by remember { mutableStateOf(false) }
 
     // Top App Bar
 
@@ -210,13 +215,18 @@ fun ProfileContent(
 
                 onValueChange = onNameChange,
 
+                enabled = isEnabled,
+
                 singleLine = true,
 
-                colors = TextFieldDefaults.colors(
+                colors = OutlinedTextFieldDefaults.colors(
                     focusedTextColor = colorResource(id = R.color.textColor),
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    disabledContainerColor = Color.Transparent
+                    focusedBorderColor = colorResource(id = R.color.textColor),
+                    cursorColor = colorResource(id = R.color.textColor),
+                    disabledBorderColor = colorResource(id = R.color.textColor),
+                    disabledTextColor = colorResource(id = R.color.textColor),
+                    disabledLeadingIconColor = colorResource(id = R.color.textColor),
+                    disabledTrailingIconColor = colorResource(id = R.color.textColor)
                 ),
 
                 leadingIcon = {
@@ -224,7 +234,9 @@ fun ProfileContent(
                 },
 
                 trailingIcon = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {
+                        isEnabled = !isEnabled
+                    }) {
 
                         Icon(imageVector = Icons.Default.Edit, contentDescription = "")
 
@@ -237,7 +249,19 @@ fun ProfileContent(
             OutlinedTextField(
                 modifier = Modifier.width(380.dp),
 
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = colorResource(id = R.color.textColor),
+                    focusedBorderColor = colorResource(id = R.color.textColor),
+                    cursorColor = colorResource(id = R.color.textColor),
+                    disabledBorderColor = colorResource(id = R.color.textColor),
+                    disabledTextColor = colorResource(id = R.color.textColor),
+                    disabledLeadingIconColor = colorResource(id = R.color.textColor),
+                    disabledTrailingIconColor = colorResource(id = R.color.textColor)
+                ),
+
                 value = number,
+
+                enabled = isEnabledo,
 
                 onValueChange = onNumberChange,
 
@@ -248,7 +272,9 @@ fun ProfileContent(
                 },
 
                 trailingIcon = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {
+                        isEnabledo = !isEnabledo
+                    }) {
 
                         Icon(imageVector = Icons.Default.Edit, contentDescription = "")
 

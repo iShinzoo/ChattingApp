@@ -14,7 +14,7 @@ import com.example.chatterbox.screens.WelcomeScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
-fun NavGraph(vm : CBViewModel) {
+fun NavGraph(vm: CBViewModel) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = Route.WelcomeScreen.route) {
@@ -46,8 +46,12 @@ fun NavGraph(vm : CBViewModel) {
         composable(
             route = Route.SingleChatScreen.route
         ) {
-            SingleChatScreen(navController = navController, vm = vm)
+            val chatId = it.arguments?.getString("chatId")
+            chatId?.let {
+                SingleChatScreen(navController = navController, vm = vm, chatId = chatId)
+            }
         }
+
         composable(
             route = Route.ProfileScreen.route
         ) {

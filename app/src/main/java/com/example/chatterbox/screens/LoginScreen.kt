@@ -1,6 +1,7 @@
 package com.example.chatterbox.screens
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -64,6 +66,11 @@ fun LoginScreen(
     if (signIn) {
         navController.navigate(Route.ChatListScreen.route)
     }
+
+    BackHandler {
+        navController.navigate(Route.WelcomeScreen.route)
+    }
+
 
     Box(
         modifier = Modifier
@@ -107,6 +114,12 @@ fun LoginScreen(
             OutlinedTextField(
                 modifier = Modifier.width(300.dp),
 
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = colorResource(id = R.color.textColor),
+                    focusedBorderColor = colorResource(id = R.color.textColor),
+                    cursorColor = colorResource(id = R.color.textColor)
+                ),
+
                 value = email,
 
                 onValueChange = { email = it },
@@ -133,6 +146,12 @@ fun LoginScreen(
 
             OutlinedTextField(
                 modifier = Modifier.width(300.dp),
+
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = colorResource(id = R.color.textColor),
+                    focusedBorderColor = colorResource(id = R.color.textColor),
+                    cursorColor = colorResource(id = R.color.textColor)
+                ),
 
                 value = password,
 

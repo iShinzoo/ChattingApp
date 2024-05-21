@@ -18,11 +18,11 @@ import dagger.hilt.android.components.ViewModelComponent
 class HiltModule {
 
     @Provides
-    fun provideAuthentication() : FirebaseAuth = Firebase.auth
+    fun provideAuthentication(): FirebaseAuth = Firebase.auth
 
     @Provides
-    fun provideFireStore() : FirebaseFirestore = Firebase.firestore
+    fun provideFireStore(): FirebaseFirestore = Firebase.firestore
 
     @Provides
-    fun provideFirebaseStorage() : FirebaseStorage = Firebase.storage
+    fun provideFirebaseStorage(): FirebaseStorage = Firebase.storage
 }

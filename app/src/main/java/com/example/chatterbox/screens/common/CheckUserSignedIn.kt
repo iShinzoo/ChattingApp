@@ -8,16 +8,16 @@ import com.example.chatterbox.CBViewModel
 import com.example.chatterbox.navigation.Route
 
 @Composable
-fun CheckUserSignedIn(vm : CBViewModel , navController: NavController){
+fun CheckUserSignedIn(vm: CBViewModel, navController: NavController) {
     val alreadySignedIn = remember {
-        mutableStateOf(false )
+        mutableStateOf(false)
     }
 
     val signIn = vm.signIn.value
 
-    if (signIn && !alreadySignedIn.value){
+    if (signIn && !alreadySignedIn.value) {
         alreadySignedIn.value = true
-        navController.navigate(Route.ChatListScreen.route){
+        navController.navigate(Route.ChatListScreen.route) {
             popUpTo(0)
         }
     }

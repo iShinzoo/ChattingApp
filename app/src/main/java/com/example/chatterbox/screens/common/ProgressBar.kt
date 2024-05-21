@@ -17,9 +17,10 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun ProgressBar() {
     Row(
-        modifier = Modifier.alpha(0.5f)
+        modifier = Modifier
+            .alpha(0.5f)
             .background(Color.LightGray)
-            .clickable(enabled = false){}
+            .clickable(enabled = false) {}
             .fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center

@@ -1,5 +1,7 @@
 package com.example.chatterbox.screens
 
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,11 +34,15 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 @Composable
-fun WelcomeScreen(navController: NavController){
+fun WelcomeScreen(navController: NavController) {
     // when the user is logged in
     val auth = Firebase.auth
     if (auth.currentUser != null) {
         navController.navigate(Route.ChatListScreen.route)
+    }
+
+    BackHandler(true) {
+        (navController.context as ComponentActivity).finish()
     }
 
     // this screen will be shown to user when he/she is logged out

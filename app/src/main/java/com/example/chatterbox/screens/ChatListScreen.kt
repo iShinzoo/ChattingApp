@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -26,6 +28,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -40,30 +44,38 @@ import androidx.navigation.NavController
 import com.example.chatterbox.CBViewModel
 import com.example.chatterbox.R
 import com.example.chatterbox.navigation.Route
+import com.example.chatterbox.screens.common.CommonUserInfo
 import com.example.chatterbox.screens.common.ProgressBar
+
 
 @Composable
 fun ChatListScreen(navController: NavController, vm: CBViewModel) {
-
     BackHandler(true) {
-        // Close the app when back button is pressed
         (navController.context as ComponentActivity).finish()
+    }
+
+    LaunchedEffect(Unit) {
+        vm.displayChats()
     }
 
     val inProcess = vm.inProcessChats
     if (inProcess.value) {
         ProgressBar()
     } else {
-        val chats = vm.chats.value
+        val chats = vm.chats.value.distinctBy { it.chatId } // Ensure no duplicates
         val userData = vm.userData.value
-        val showDialog = remember {
-            mutableStateOf(false)
-        }
+        val showDialog = remember { mutableStateOf(false) }
+        val addChatNumber = remember { mutableStateOf("") }
+
         val onFabClick: () -> Unit = { showDialog.value = true }
-        val onDismiss: () -> Unit = { showDialog.value = false }
+        val onDismiss: () -> Unit = {
+            showDialog.value = false
+            addChatNumber.value = ""
+        }
         val onAddChat: (String) -> Unit = {
             vm.onAddChat(it)
             showDialog.value = false
+            addChatNumber.value = ""
         }
 
         Column(
@@ -78,15 +90,17 @@ fun ChatListScreen(navController: NavController, vm: CBViewModel) {
                         showDialog = showDialog.value,
                         onDismiss = onDismiss,
                         onFabClick = onFabClick,
-                        onAddChat = onAddChat)
+                        onAddChat = onAddChat,
+                        addChatNumber = addChatNumber
+                    )
                 },
                 content = {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(it)
-                    ){
-                        if (chats.isEmpty()){
+                    ) {
+                        if (chats.isEmpty()) {
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -96,13 +110,36 @@ fun ChatListScreen(navController: NavController, vm: CBViewModel) {
                             ) {
                                 Text(text = "No Chats Available")
                             }
+                        } else {
+                            LazyColumn(
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                items(chats) { chat ->
+                                    val chatUser = if (chat.user1.userId == userData?.userId) {
+                                        chat.user2
+                                    } else {
+                                        chat.user1
+                                    }
+                                    CommonUserInfo(
+                                        imageUrl = chatUser.imageUrl,
+                                        name = chatUser.name
+                                    ) {
+                                        chat.chatId?.let {
+                                            navController.navigate(
+                                                Route.SingleChatScreen.createRoute(
+                                                    id = it
+                                                )
+                                            )
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             )
         }
     }
-
 }
 
 
@@ -111,23 +148,28 @@ fun Fab(
     showDialog: Boolean,
     onDismiss: () -> Unit,
     onFabClick: () -> Unit,
-    onAddChat: (String) -> Unit
+    onAddChat: (String) -> Unit,
+    addChatNumber: MutableState<String>
 ) {
-    val addChatNumber = remember {
-        mutableStateOf("")
-    }
-
     if (showDialog) {
-        AlertDialog(onDismissRequest = { onDismiss.invoke() }, confirmButton = {
-            Button(onClick = { onAddChat(addChatNumber.value) },
-                colors = ButtonDefaults.buttonColors(colorResource(id = R.color.textColor))) {
-                Text(text = "Add Chat")
-            }
-        },
+        AlertDialog(
+            onDismissRequest = { onDismiss() },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        onAddChat(addChatNumber.value)
+                    },
+                    colors = ButtonDefaults.buttonColors(colorResource(id = R.color.textColor))
+                ) {
+                    Text(text = "Add Chat")
+                }
+            },
             title = { Text(text = "Add Chat") },
             text = {
                 OutlinedTextField(
-                    value = addChatNumber.value, onValueChange = { addChatNumber.value = it },
+                    value = addChatNumber.value,
+                    onValueChange = { addChatNumber.value = it },
+                    singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = colorResource(id = R.color.textColor),
@@ -141,19 +183,14 @@ fun Fab(
     FloatingActionButton(
         onClick = { onFabClick() },
         containerColor = colorResource(id = R.color.og),
-        shape = CircleShape,
-        modifier = Modifier.padding(bottom = 40.dp)
+        modifier = Modifier.padding(bottom = 10.dp, end = 10.dp)
     ) {
-
         Icon(
             imageVector = Icons.Rounded.AddComment,
             contentDescription = null,
-            tint = colorResource(
-                id = R.color.white
-            )
+            tint = colorResource(id = R.color.white)
         )
     }
-
 }
 
 

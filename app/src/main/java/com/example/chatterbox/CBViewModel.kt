@@ -10,21 +10,30 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import coil.compose.rememberImagePainter
+import com.example.chatterbox.data.CHATS
 import com.example.chatterbox.data.ChatData
+import com.example.chatterbox.data.ChatUser
 import com.example.chatterbox.data.Event
+import com.example.chatterbox.data.MESSAGES
+import com.example.chatterbox.data.Message
 import com.example.chatterbox.data.USER_NODE
 import com.example.chatterbox.data.UserData
 import com.example.chatterbox.screens.common.ShowToast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.toObject
+import com.google.firebase.firestore.toObjects
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.lang.Exception
+import java.util.Calendar
 import java.util.UUID
 import javax.inject.Inject
 
@@ -39,12 +48,59 @@ class CBViewModel @Inject constructor(
     val eventMutbaleState = mutableStateOf<Event<String>?>(null)
     var signIn = mutableStateOf(false)
     val userData = mutableStateOf<UserData?>(null)
-    val  chats = mutableStateOf<List<ChatData>>(listOf())
+    val chats = mutableStateOf<List<ChatData>>(listOf())
+    val chatMessages = mutableStateOf<List<Message>>(listOf())
+    val inProcessMessages = mutableStateOf(false)
+    var currentChatMessageListener: ListenerRegistration? = null
 
     init {
         val currentUser = auth.currentUser
         currentUser?.uid?.let {
             getUserData(it)
+        }
+    }
+
+    fun displayMessages(chatId: String) {
+        inProcessMessages.value = true
+        currentChatMessageListener = db.collection(CHATS).document(chatId).collection(MESSAGES)
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    handleException(error)
+                    return@addSnapshotListener
+                }
+                if (value != null) {
+                    chatMessages.value = value.documents.mapNotNull {
+                        it.toObject<Message>()
+                    }.sortedBy {
+                        it.timestamp
+                    }
+                    inProcessMessages.value = false
+                }
+            }
+    }
+
+    fun hideMessage(){
+        chatMessages.value = listOf()
+        currentChatMessageListener =  null
+    }
+
+    fun displayChats() {
+        inProcessChats.value = true
+        db.collection(CHATS).where(
+            Filter.or(
+                Filter.equalTo("user1.userId", userData.value?.userId),
+                Filter.equalTo("user2.userId", userData.value?.userId)
+            )
+        ).addSnapshotListener { value, error ->
+            if (error != null) {
+                handleException(error)
+            }
+            if (value != null) {
+                chats.value = value.documents.mapNotNull {
+                    it.toObject<ChatData>()
+                }
+                inProcessChats.value = false
+            }
         }
     }
 
@@ -138,9 +194,10 @@ class CBViewModel @Inject constructor(
             }
 
             if (value != null) {
-                var user = value.toObject<UserData>()
+                val user = value.toObject<UserData>()
                 userData.value = user
                 inProcess.value = false
+                displayChats()
             }
         }
     }
@@ -187,10 +244,71 @@ class CBViewModel @Inject constructor(
         signIn.value = false
         userData.value = null
         eventMutbaleState.value = Event("Logged Out")
+        hideMessage()
+        currentChatMessageListener = null
     }
 
-    fun onAddChat(it: String) {
 
+    fun onAddChat(number: String) {
+        if (number.isEmpty() || !number.isDigitsOnly()) {
+            handleException(customMessage = "Number must contain digits only")
+            return
+        }
+
+        db.collection(USER_NODE).whereEqualTo("number", number).get()
+            .addOnSuccessListener { querySnapshot ->
+                if (querySnapshot.isEmpty) {
+                    handleException(customMessage = "User with the provided number not found")
+                    return@addOnSuccessListener
+                }
+
+                val chatPartner = querySnapshot.documents[0].toObject<UserData>()
+                val existingChat = chats.value.find { chat ->
+                    (chat.user1.number == number && chat.user2.number == userData.value?.number) ||
+                            (chat.user1.number == userData.value?.number && chat.user2.number == number)
+                }
+
+                if (existingChat != null) {
+                    handleException(customMessage = "Chat already exists")
+                    return@addOnSuccessListener
+                }
+
+                val id = db.collection(CHATS).document().id
+                val chat = ChatData(
+                    chatId = id,
+                    user1 = ChatUser(
+                        userData.value?.number,
+                        userData.value?.userId,
+                        userData.value?.imageUrl,
+                        userData.value?.name
+                    ),
+                    user2 = ChatUser(
+                        chatPartner?.number,
+                        chatPartner?.userId,
+                        chatPartner?.imageUrl,
+                        chatPartner?.name
+                    )
+                )
+
+                db.collection(CHATS).document(id).set(chat).addOnSuccessListener {
+                    // Update the chat list in the ViewModel
+                    val updatedChats = chats.value.toMutableList()
+                    updatedChats.add(chat)
+                    chats.value = updatedChats.distinctBy { it.chatId } // Ensure no duplicates
+                }.addOnFailureListener { exception ->
+                    handleException(exception)
+                }
+            }.addOnFailureListener { exception ->
+                handleException(exception)
+            }
     }
+
+    fun onSendReply(chatId: String, message: String) {
+        val time = Calendar.getInstance().time.toString()
+        val msg = Message(userData.value?.userId, message, time)
+        db.collection(CHATS).document(chatId).collection(MESSAGES).document().set(msg)
+    }
+
+
 }
 
