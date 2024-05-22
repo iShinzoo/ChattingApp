@@ -1,4 +1,4 @@
-package com.example.chatterbox.screens.common
+package com.example.chatterbox.ui.screen.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,8 +32,8 @@ fun CommonUserInfo(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp)
-            .padding(start = 12.dp, end = 12.dp, bottom = 8.dp)
+            .height(72.dp)
+            .padding(12.dp)
             .clickable {
                 onItemClick.invoke()
             },

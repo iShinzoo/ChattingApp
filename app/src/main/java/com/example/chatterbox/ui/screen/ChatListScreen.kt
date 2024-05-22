@@ -1,7 +1,8 @@
-package com.example.chatterbox.screens
+package com.example.chatterbox.ui.screen
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -43,9 +43,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.chatterbox.CBViewModel
 import com.example.chatterbox.R
-import com.example.chatterbox.navigation.Route
-import com.example.chatterbox.screens.common.CommonUserInfo
-import com.example.chatterbox.screens.common.ProgressBar
+import com.example.chatterbox.ui.navigation.Route
+import com.example.chatterbox.ui.screen.common.CommonUserInfo
+import com.example.chatterbox.ui.screen.common.ProgressBar
 
 
 @Composable
@@ -78,69 +78,70 @@ fun ChatListScreen(navController: NavController, vm: CBViewModel) {
             addChatNumber.value = ""
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            TopAppbar(navController = navController)
-
-            Scaffold(
-                floatingActionButton = {
-                    Fab(
-                        showDialog = showDialog.value,
-                        onDismiss = onDismiss,
-                        onFabClick = onFabClick,
-                        onAddChat = onAddChat,
-                        addChatNumber = addChatNumber
-                    )
-                },
-                content = {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(it)
-                    ) {
-                        if (chats.isEmpty()) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
-                            ) {
-                                Text(text = "No Chats Available")
-                            }
-                        } else {
-                            LazyColumn(
-                                modifier = Modifier.weight(1f)
-                            ) {
-                                items(chats) { chat ->
-                                    val chatUser = if (chat.user1.userId == userData?.userId) {
-                                        chat.user2
-                                    } else {
-                                        chat.user1
-                                    }
-                                    CommonUserInfo(
-                                        imageUrl = chatUser.imageUrl,
-                                        name = chatUser.name
-                                    ) {
-                                        chat.chatId?.let {
-                                            navController.navigate(
-                                                Route.SingleChatScreen.createRoute(
-                                                    id = it
-                                                )
+        Scaffold(
+            topBar = {
+                TopAppbar(navController = navController)
+            },
+            floatingActionButton = {
+                Fab(
+                    showDialog = showDialog.value,
+                    onDismiss = onDismiss,
+                    onFabClick = onFabClick,
+                    onAddChat = onAddChat,
+                    addChatNumber = addChatNumber
+                )
+            },
+            content = { innerPadding ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.White)
+                        .padding(innerPadding) // Ensure content respects scaffold padding
+                ) {
+                    if (chats.isEmpty()) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                                .background(Color.White),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(text = "No Chats Available")
+                        }
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier
+                                .weight(1f)
+                                .background(Color.White)
+                        ) {
+                            items(chats) { chat ->
+                                val chatUser = if (chat.user1.userId == userData?.userId) {
+                                    chat.user2
+                                } else {
+                                    chat.user1
+                                }
+                                CommonUserInfo(
+                                    imageUrl = chatUser.imageUrl,
+                                    name = chatUser.name
+                                ) {
+                                    chat.chatId?.let {
+                                        navController.navigate(
+                                            Route.SingleChatScreen.createRoute(
+                                                id = it
                                             )
-                                        }
+                                        )
                                     }
                                 }
                             }
                         }
                     }
                 }
-            )
-        }
+            }
+        )
     }
 }
+
 
 
 @Composable

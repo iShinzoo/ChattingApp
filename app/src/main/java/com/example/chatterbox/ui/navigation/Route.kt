@@ -1,4 +1,4 @@
-package com.example.chatterbox.navigation
+package com.example.chatterbox.ui.navigation
 
 sealed class Route (
     val route : String

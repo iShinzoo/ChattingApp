@@ -2,17 +2,9 @@ package com.example.chatterbox
 
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
-import coil.compose.rememberImagePainter
 import com.example.chatterbox.data.CHATS
 import com.example.chatterbox.data.ChatData
 import com.example.chatterbox.data.ChatUser
@@ -21,14 +13,12 @@ import com.example.chatterbox.data.MESSAGES
 import com.example.chatterbox.data.Message
 import com.example.chatterbox.data.USER_NODE
 import com.example.chatterbox.data.UserData
-import com.example.chatterbox.screens.common.ShowToast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.toObject
-import com.google.firebase.firestore.toObjects
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel

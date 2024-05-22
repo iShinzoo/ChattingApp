@@ -1,4 +1,4 @@
-package com.example.chatterbox.screens.common
+package com.example.chatterbox.ui.screen.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.wrapContentSize

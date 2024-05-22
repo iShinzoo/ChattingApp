@@ -1,8 +1,9 @@
-package com.example.chatterbox.screens
+package com.example.chatterbox.ui.screen
 
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,7 +28,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -50,8 +50,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.chatterbox.CBViewModel
 import com.example.chatterbox.R
-import com.example.chatterbox.navigation.Route
-import com.example.chatterbox.screens.common.CommonImage
+import com.example.chatterbox.ui.navigation.Route
+import com.example.chatterbox.ui.screen.common.CommonImage
 
 @Composable
 fun ProfileScreen(navController: NavController, vm: CBViewModel) {
@@ -116,7 +116,7 @@ fun ProfileContent(
     // Top App Bar
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().background(Color.White)
     ) {
 
         Column(

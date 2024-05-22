@@ -1,4 +1,4 @@
-package com.example.chatterbox.screens.common
+package com.example.chatterbox.ui.screen.common
 
 import android.widget.Toast
 import androidx.compose.runtime.Composable

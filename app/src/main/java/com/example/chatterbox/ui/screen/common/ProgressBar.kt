@@ -1,4 +1,4 @@
-package com.example.chatterbox.screens.common
+package com.example.chatterbox.ui.screen.common
 
 import android.widget.ProgressBar
 import androidx.compose.foundation.background
@@ -19,9 +19,8 @@ fun ProgressBar() {
     Row(
         modifier = Modifier
             .alpha(0.5f)
-            .background(Color.LightGray)
             .clickable(enabled = false) {}
-            .fillMaxSize(),
+            .background(Color.White),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {

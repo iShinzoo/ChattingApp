@@ -1,4 +1,4 @@
-package com.example.chatterbox
+package com.example.chatterbox.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth

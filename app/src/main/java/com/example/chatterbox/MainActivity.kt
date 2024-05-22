@@ -8,7 +8,8 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.chatterbox.navigation.NavGraph
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.example.chatterbox.ui.navigation.NavGraph
 import com.example.chatterbox.ui.theme.ChatterBoxTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,6 +21,7 @@ class MainActivity() : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        installSplashScreen()
         setContent {
             ChatterBoxTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {

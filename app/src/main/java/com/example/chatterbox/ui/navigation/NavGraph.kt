@@ -1,17 +1,16 @@
-package com.example.chatterbox.navigation
+package com.example.chatterbox.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.chatterbox.CBViewModel
-import com.example.chatterbox.screens.ChatListScreen
-import com.example.chatterbox.screens.LoginScreen
-import com.example.chatterbox.screens.ProfileScreen
-import com.example.chatterbox.screens.SignUpScreen
-import com.example.chatterbox.screens.SingleChatScreen
-import com.example.chatterbox.screens.WelcomeScreen
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.example.chatterbox.ui.screen.ChatListScreen
+import com.example.chatterbox.ui.screen.LoginScreen
+import com.example.chatterbox.ui.screen.ProfileScreen
+import com.example.chatterbox.ui.screen.SignUpScreen
+import com.example.chatterbox.ui.screen.SingleChatScreen
+import com.example.chatterbox.ui.screen.WelcomeScreen
 
 @Composable
 fun NavGraph(vm: CBViewModel) {

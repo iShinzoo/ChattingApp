@@ -1,4 +1,4 @@
-package com.example.chatterbox.screens.common
+package com.example.chatterbox.ui.screen.common
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text

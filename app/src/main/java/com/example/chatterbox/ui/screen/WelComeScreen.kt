@@ -1,4 +1,4 @@
-package com.example.chatterbox.screens
+package com.example.chatterbox.ui.screen
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.chatterbox.R
-import com.example.chatterbox.navigation.Route
+import com.example.chatterbox.ui.navigation.Route
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 

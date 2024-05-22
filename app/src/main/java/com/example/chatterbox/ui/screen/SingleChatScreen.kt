@@ -1,4 +1,4 @@
-package com.example.chatterbox.screens
+package com.example.chatterbox.ui.screen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -22,7 +22,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Phone
@@ -59,8 +58,8 @@ import androidx.navigation.NavController
 import com.example.chatterbox.CBViewModel
 import com.example.chatterbox.R
 import com.example.chatterbox.data.Message
-import com.example.chatterbox.navigation.Route
-import com.example.chatterbox.screens.common.CommonImage
+import com.example.chatterbox.ui.navigation.Route
+import com.example.chatterbox.ui.screen.common.CommonImage
 
 @Composable
 fun SingleChatScreen(navController: NavController, vm: CBViewModel, chatId: String) {
@@ -95,6 +94,7 @@ fun SingleChatScreen(navController: NavController, vm: CBViewModel, chatId: Stri
         modifier = Modifier
             .fillMaxSize()
             .imePadding()
+            .background(Color.White)
     ) {
 
         TopChatBar(name = chatUser.name ?: "", imageUrl = chatUser.imageUrl ?: "") {
@@ -212,7 +212,7 @@ fun TopChatBar(name: String, imageUrl: String, onBackClicked: () -> Unit) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReplyBox(
     reply: String,
@@ -264,7 +264,6 @@ fun ReplyBox(
                 },
                 leadingIcon = {
                     IconButton(onClick = {
-
                     }) {
                         Icon(
                             Icons.Default.AddCircle,
