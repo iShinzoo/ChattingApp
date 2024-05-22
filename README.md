@@ -23,7 +23,7 @@ their contactsin a sleek and intuitive interface.
 
 
 ## Screenshot
-
+<img src="https://github.com/iShinzoo/ChattingApp/blob/master/assets/Screenshot_20240521_121440.jpg" alt="project-screenshot" width="150" height="300/"> <img src="https://github.com/iShinzoo/ChattingApp/blob/master/assets/Screenshot_20240521_121437.jpg" alt="project-screenshot" width="150" height="300/"> <img src="https://github.com/iShinzoo/ChattingApp/blob/master/assets/Screenshot_20240521_121444.jpg" alt="project-screenshot" width="150" height="300/"> <img src="https://github.com/iShinzoo/ChattingApp/blob/master/assets/Screenshot_20240521_131009.jpg" alt="project-screenshot" width="150" height="300/"> <img src="https://github.com/iShinzoo/ChattingApp/blob/master/assets/Screenshot_20240521_131014.jpg" alt="project-screenshot" width="150" height="300/"> <img src="https://github.com/iShinzoo/ChattingApp/blob/master/assets/Screenshot_20240521_131022.jpg" alt="project-screenshot" width="150" height="300/">
 
 ## Package Structure
 
