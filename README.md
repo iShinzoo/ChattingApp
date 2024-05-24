@@ -1,4 +1,4 @@
-# RunTrack
+# ChatterBox
 
 ChatterBox is a modern chatting application built on Android, leveraging cutting-edge
 technologies such as Jetpack Compose,MVVM architecture, FireStore , Firebase Authentication
