@@ -144,6 +144,6 @@ dependencies {
     implementation ("androidx.core:core-splashscreen:1.1.0-alpha02")
 
     // modal bottom sheet
-    implementation ("androidx.compose.material:material:1.4.3")
-    implementation ("androidx.compose.ui:ui:1.4.3")
+    implementation ("androidx.compose.material:material:1.6.7")
+    implementation ("androidx.compose.ui:ui:1.6.7")
 }
