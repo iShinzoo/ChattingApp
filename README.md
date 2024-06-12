@@ -21,6 +21,10 @@ their contactsin a sleek and intuitive interface.
 5. Security and Privacy: Prioritize user privacy and security with end-to-end encryption
  for messages, ensuring confidential conversations stay private.
 
+***Install the apk from here 👇***
+
+[Click Me !](https://github.com/iShinzoo/ChattingApp/releases/tag/v1.0)
+
 
 ## Screenshot
 <img src="https://github.com/iShinzoo/ChattingApp/blob/master/assets/Screenshot_20240521_121440.jpg" alt="project-screenshot" width="150" height="300/"> <img src="https://github.com/iShinzoo/ChattingApp/blob/master/assets/Screenshot_20240521_121437.jpg" alt="project-screenshot" width="150" height="300/"> <img src="https://github.com/iShinzoo/ChattingApp/blob/master/assets/Screenshot_20240521_121444.jpg" alt="project-screenshot" width="150" height="300/"> <img src="https://github.com/iShinzoo/ChattingApp/blob/master/assets/Screenshot_20240521_131009.jpg" alt="project-screenshot" width="150" height="300/"> <img src="https://github.com/iShinzoo/ChattingApp/blob/master/assets/Screenshot_20240521_131014.jpg" alt="project-screenshot" width="150" height="300/"> <img src="https://github.com/iShinzoo/ChattingApp/blob/master/assets/Screenshot_20240521_131022.jpg" alt="project-screenshot" width="150" height="300/">
